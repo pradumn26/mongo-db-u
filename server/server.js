@@ -17,4 +17,8 @@ app.post('/todos', (req, res) => {
     newTodo.save().then((doc) => {res.send(doc)}).catch((e) => {res.status(400).send(e)});
 });
 
+app.get('/todos', (req, res) => {
+    Todo.find().then((todosArray) => {res.send({todosArray: todosArray})}).catch((e) => {res.status(400).send(e)})
+})
+
 app.listen(3000, () => console.log("app is deployed to port 3000"));
