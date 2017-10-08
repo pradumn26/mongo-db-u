@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+var {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose-db');
-var {Todo} = require('./models/Todo')
-var {User} = require('./models/User')
+var {Todo} = require('./models/Todo');
+var {User} = require('./models/User');
 
 var app = express();
 
@@ -19,6 +20,19 @@ app.post('/todos', (req, res) => {
 
 app.get('/todos', (req, res) => {
     Todo.find().then((todosArray) => {res.send({todosArray: todosArray})}).catch((e) => {res.status(400).send(e)})
-})
+});
+
+app.get('/todo/:id', (req, res) => {
+    if(ObjectID.isValid(req.params.id))
+        Todo.findById(req.params.id).then((doc) => {
+            if(doc) {
+                res.send({doc})
+            }
+            else
+                res.send("doc not present")
+        }).catch((e) => res.send(e));
+    else
+        res.send("ID is invalid");
+});
 
 app.listen(3000, () => console.log("app is deployed to port 3000"));
