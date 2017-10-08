@@ -35,4 +35,4 @@ app.get('/todo/:id', (req, res) => {
         res.send("ID is invalid");
 });
 
-app.listen(3000, () => console.log("app is deployed to port 3000"));
+app.listen(process.env.PORT || 3000, () => console.log("app is deployed to port 3000"));
